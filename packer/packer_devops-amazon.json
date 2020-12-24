@@ -1,0 +1,51 @@
+{  
+   "variables":{  
+      "version":"0.1.0",
+      "aws_access_key":"$AWS-ACCESS-KEY",
+      "aws_secret_key":"$AWS-SECRET-KEY",
+      "region":"us-east-1",
+      "vpc_id":"vpc-e31ee385",
+      "subnet_id":"subnet-5ba1c812"
+   },
+   "provisioners":[  
+      {
+        "type": "file",
+        "source": "../run_me_first.sh",
+        "destination": "/tmp/run_me_first.sh"
+      },
+      {  
+         "type":"shell",
+         "inline":[  
+            "sleep 30",
+            "sudo apt-get update -q",
+            "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy",
+            "sudo apt-get install -qy screen python3 python3-pip git chrony apt-transport-https ca-certificates curl wget software-properties-common dialog apt-utils htop virtualenv jq",
+            "sudo sh /tmp/run_me_first.sh",
+	    "/usr/bin/pip3 install s3-client"
+         ]
+      }
+   ],
+   "builders":[  
+      {  
+         "type":"amazon-ebs",
+         "access_key":"{{user `aws_access_key`}}",
+         "secret_key":"{{user `aws_secret_key`}}",
+         "region":"{{user `region`}}",
+         "source_ami":"ami-0885b1f6bd170450c",
+         "instance_type":"t2.micro",
+         "vpc_id":"{{user `vpc_id`}}",
+         "subnet_id":"{{user `subnet_id`}}",
+         "associate_public_ip_address": "true",
+         "ssh_username":"ubuntu",
+         "ami_name":"DevOps_1",
+         "ami_description":"DevOps Template",
+         "tags":{  
+            "NodeType":"DevOps",
+            "service":"DevOps"
+         },
+         "run_tags":{  
+            "NodeType":"DevOps"
+         }
+      }
+   ]
+}
