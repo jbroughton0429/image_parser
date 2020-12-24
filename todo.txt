@@ -1,0 +1,25 @@
+#####
+#Env#
+#####
+
+1. I will need a Script/App to install Ansible, Packer, TF that auto-installs a 'base' so that I can build out the foundation for the rest of the steps. This should be basic, repeatable and only skeleton apps. $$Skeleton$$
+2. There should be an image built for repeatable deployments/testing scenarios. These images should be created in standard software (packer), easy to modify, and deployable to a range of Cloud providers, if necessary.
+  The images should: Golden, with MariaDB and Console built off of golden. $$Images$$
+3. Once I have a foundation and images, I'll need to build out the environment with Terraform. This will allow for a repatables IaC solution to not only test my code by allow my colleagues to repeat my processes for debugging
+   and deployment $$IaC$$
+
+#####
+#TDD#
+#####
+
+1. A function should be setup to populate S3 Buckets with 'old' and 'new' data (2 buckets). The function should be flags that accept a range of random numbers for creating the avatar-images $$pop-bucket$$
+2. A function should be setup to populate the DB with the 'old' data located in the S3 Bucket by querying the 'old' S3 Bucket and then updating the database $$pop-db$$
+3. A function in the script should be able to 'validate' the data has ben properly moved between the buckets $$val-data$$
+4. There should be a final switch/function that resets all buckets and database to a 'clean' state $$reset$$
+
+
+########
+#Script#
+########
+
+WIP
