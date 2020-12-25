@@ -1,8 +1,8 @@
 {  
    "variables":{  
       "version":"0.1.0",
-      "aws_access_key":"$AWS-ACCESS-KEY",
-      "aws_secret_key":"$AWS-SECRET-KEY",
+      "aws_access_key":"$AWSACCESSKEY",
+      "aws_secret_key":"$AWSSECRETKEY",
       "region":"us-east-1",
       "vpc_id":"vpc-e31ee385",
       "subnet_id":"subnet-5ba1c812"
@@ -10,10 +10,15 @@
    "provisioners":[  
       {
         "type": "file",
-        "source": "../run_me_first.sh",
+        "source": "../scripts/run_me_first.sh",
         "destination": "/tmp/run_me_first.sh"
       },
-      {  
+      {
+        "type": "file",
+	"source": "../../image_parser",
+	"destination": "/home/ubuntu/"
+      },
+         {  
          "type":"shell",
          "inline":[  
             "sleep 30",
@@ -21,7 +26,8 @@
             "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy",
             "sudo apt-get install -qy screen python3 python3-pip git chrony apt-transport-https ca-certificates curl wget software-properties-common dialog apt-utils htop virtualenv jq",
             "sudo sh /tmp/run_me_first.sh",
-	    "/usr/bin/pip3 install s3-client"
+	    "/usr/bin/pip3 install s3-client",
+	    "cp /home/ubuntu/image_parser/keys/console ~/.ssh/id_rsa"
          ]
       }
    ],
@@ -37,7 +43,7 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"DevOps_1",
+         "ami_name":"DevOps_3",
          "ami_description":"DevOps Template",
          "tags":{  
             "NodeType":"DevOps",

@@ -1,20 +1,26 @@
 {  
    "variables":{  
       "version":"1.0.0",
-      "aws_access_key":"$AWS-ACCESS-KEY",
-      "aws_secret_key":"$AWS-SECRET-KEY",
+      "aws_access_key":"$AWSACCESSKEY",
+      "aws_secret_key":"$AWSSECRETKEY",
       "region":"us-east-1",
       "vpc_id":"vpc-e31ee385",
       "subnet_id":"subnet-5ba1c812"
    },
    "provisioners":[  
+      {
+         "type": "file",
+	 "source": "../keys/console.pub",
+	 "destination":"/tmp/console.pub"
+      },
       {  
          "type":"shell",
          "inline":[  
             "sleep 30",
             "sudo apt-get update -q",
             "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy",
-            "sudo apt-get install -qy mariadb-server mariadb-client mariadb-common"
+            "sudo apt-get install -qy mariadb-server mariadb-client mariadb-common",
+	    "cat /tmp/console.pub >> ~/.ssh/authorized_keys"
          ]
       }
    ],
@@ -30,7 +36,7 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"Database",
+         "ami_name":"Database_1",
          "ami_description":"DB Template",
          "tags":{  
             "NodeType":"DB",

@@ -7,3 +7,4 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt-get update --yes
 sudo apt install --yes software-properties-common ansible terraform packer
+

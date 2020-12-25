@@ -13,7 +13,7 @@ terraform {
 
 resource "aws_key_pair" "database" {
   key_name   = "production"
-  public_key = file("key.pub")
+  public_key = file("../../keys/database.pub")
 }
 
 resource "aws_security_group" "database" {
@@ -45,7 +45,7 @@ resource "aws_security_group" "database" {
 
 resource "aws_instance" "database" {
   key_name      = aws_key_pair.database.key_name
-  ami           = "ami-0399eba3e54a5b2c3"
+  ami           = "ami-0a25d711736cbe07a"
   instance_type = "t2.micro"
 
   tags = {

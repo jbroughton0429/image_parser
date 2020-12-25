@@ -13,7 +13,7 @@ terraform {
 
 resource "aws_key_pair" "console" {
   key_name   = "devops"
-  public_key = file("key.pub")
+  public_key = file("../../keys/console.pub")
 }
 
 resource "aws_security_group" "console" {
@@ -45,7 +45,7 @@ resource "aws_security_group" "console" {
 
 resource "aws_instance" "console" {
   key_name      = aws_key_pair.console.key_name
-  ami           = "ami-044f8b9f70902588a"
+  ami           = "ami-01b0f8072d1536fc8"
   instance_type = "t2.micro"
 
   tags = {

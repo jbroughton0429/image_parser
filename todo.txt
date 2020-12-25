@@ -9,10 +9,9 @@
    and deployment $$IaC$$
 
 //ENV MISC//
-1. MariaDB image should build before DevOps Image - Create SSH Key for tunneling
-   a. Currently create ssh keys via tf and insert into image that is run - I may still run with this
-2. Document steps to execute
-3. Create 'Secret key scrub' for git push
+--DONE-- 1. MariaDB image should build before DevOps Image - Create SSH Key for tunneling
+--DONE-- 2. Document steps to execute
+--DONE-- 3. Create 'Secret key scrub' for git push
 4. Var out TF for AMI's (currently hardcoded)
 
 
