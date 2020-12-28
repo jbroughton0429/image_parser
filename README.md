@@ -27,8 +27,6 @@ You will need this to login to both console and database servers.
 correctly, run an SSH connection to validate this: ssh <ip-of-database-server> and accept the fingerprint.  After this you should no longer
 need to accept fingerprint.
 
-2. Inside of Tests/tests.py (should probably rename that). Change the VAR: 'ssh_address_or_host' to that of your database server, and run this
-   python script in the background (for now). This is the script that runs a reverse tunnel into your database server for mysql connections
-   on port 3337
+2. Tunnel.py is a reverse tunnel for the database server. Run this with ./tunnel.py -r <hostname-of-database-server> run it in the background to continue the connection. The default port is TCP/3337.
 
 

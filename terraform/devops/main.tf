@@ -45,7 +45,7 @@ resource "aws_security_group" "console" {
 
 resource "aws_instance" "console" {
   key_name      = aws_key_pair.console.key_name
-  ami           = "ami-01b0f8072d1536fc8"
+  ami           = "ami-00ceb1417c3010978"
   instance_type = "t2.micro"
 
   tags = {

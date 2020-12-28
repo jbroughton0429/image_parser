@@ -7,11 +7,18 @@
   of the server/service
 
 """
-import stunnel
+import argparse
+import paramiko
 
 from sshtunnel import SSHTunnelForwarder
 
-ssh_address_or_host= "172.31.36.45"
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-r', type=str, required=True,
+        help="IP Address of Database Server")
+args = parser.parse_args()
+
+ssh_address_or_host= args.r
 
 server = SSHTunnelForwarder(
          (ssh_address_or_host),

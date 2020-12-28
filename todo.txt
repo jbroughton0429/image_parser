@@ -20,7 +20,7 @@
 #####
 
 1. A function should be setup to populate S3 Buckets with 'old' and 'new' data (2 buckets). The function should be flags that accept a range of random numbers for creating the avatar-images $$pop-bucket$$
-	a. Look at Tempfile / NamedTempfile
+	--DONE-- a. Look at Tempfile / NamedTempfile
 2. A function should be setup to populate the DB with the 'old' data located in the S3 Bucket by querying the 'old' S3 Bucket and then updating the database $$pop-db$$
 	a. SQL
 3. A function in the script should be able to 'validate' the data has ben properly moved between the buckets $$val-data$$
@@ -32,3 +32,11 @@
 ########
 
 WIP
+
+
+@@@@@@@@@@@@@@@@@@
+@@ Nice to have @@
+@@@@@@@@@@@@@@@@@@
+* Wrap packer ami output into variable for TF AMI
+* Script to output IP Addresses up completion of TF - used to connect and make changes to proxy	(Instead of relying on AWS Console
+	* terraform show - json -> send to python and output: name, region, key name, private ip address
