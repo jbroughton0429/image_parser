@@ -26,7 +26,7 @@
             "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy",
             "sudo apt-get install -qy screen python3 python3-pip git chrony apt-transport-https ca-certificates curl wget software-properties-common dialog apt-utils htop virtualenv jq mysql_client unzip",
             "sudo sh /tmp/run_me_first.sh",
-	    "/usr/bin/pip3 install s3-client sshtunnel paramiko argparse",
+	    "/usr/bin/pip3 install s3-client sshtunnel paramiko argparse boto3",
 	    "cp /home/ubuntu/image_parser/keys/console ~/.ssh/id_rsa"
          ]
       }
