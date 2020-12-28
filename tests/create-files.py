@@ -2,6 +2,9 @@
 import os
 import argparse
 import tempfile
+import logging
+import boto3
+import botocore.exceptions 
 
 from tempfile import mkstemp
 
@@ -34,6 +37,10 @@ for i in range(legacy_num):
 
     with os.fdopen(fd, 'w') as fp:
         fp.write('Legacy Files\n')
+    
+    s3 = boto3.client('s3')
+    with open(fd, "rb") as f:
+        s3.upload_fileobj(f, "jaysons-legacy-image-bucket", fd)
 
 for i in range(modern_num):
 
@@ -41,4 +48,5 @@ for i in range(modern_num):
 
     with os.fdopen(fd, 'w') as fp:
         fp.write('Modern Files\n')
+
 
