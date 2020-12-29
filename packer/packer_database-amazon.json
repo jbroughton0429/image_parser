@@ -1,8 +1,8 @@
 {  
    "variables":{  
       "version":"1.0.0",
-      "aws_access_key":"",
-      "aws_secret_key":"",
+      "aws_access_key":"$AWSACCESSKEY",
+      "aws_secret_key":"$AWSSECRETKEY",
       "region":"us-east-1",
       "vpc_id":"vpc-e31ee385",
       "subnet_id":"subnet-5ba1c812"
