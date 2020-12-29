@@ -3,7 +3,7 @@ CREATE DATABASE avatar_db;
 CREATE USER rtrenneman IDENTIFIED BY 'haveyouturneditoffandonagain';
 FLUSH PRIVILEGES;
 
-SELECT DATABASE avatar_db;
+USE avatar_db;
 
 CREATE TABLE avatars (
 	id MEDIUMINT NOT NULL AUTO_INCREMENT,

@@ -24,9 +24,9 @@
             "sleep 30",
             "sudo apt-get update -q",
             "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy",
-            "sudo apt-get install -qy screen python3 python3-pip git chrony apt-transport-https ca-certificates curl wget software-properties-common dialog apt-utils htop virtualenv jq mysql-client unzip",
+            "sudo apt-get install -qy screen python3 python3-pip git chrony apt-transport-https ca-certificates curl wget software-properties-common dialog apt-utils mysql-client unzip libmariadb3 libmariadb-dev",
             "sudo sh /tmp/run_me_first.sh",
-	    "/usr/bin/pip3 install s3-client sshtunnel paramiko argparse boto3",
+	    "/usr/bin/pip3 install s3-client sshtunnel paramiko argparse boto3 mariadb",
 	    "cp /home/ubuntu/image_parser/keys/console ~/.ssh/id_rsa",
 	    "cp /home/ubuntu/image_parser/scripts/.screenrc /home/ubuntu/"
          ]
@@ -44,7 +44,7 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"DevOps_2",
+         "ami_name":"DevOps_3",
          "ami_description":"DevOps Template",
          "tags":{  
             "NodeType":"DevOps",

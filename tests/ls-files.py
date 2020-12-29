@@ -1,11 +1,28 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-import os, sys
+import boto3
 
-# Open file
-path = "./legacy-s3"
-dirs = os.listdir( path )
+# Vars for S3 Buckets
+legacy_bucket = "jaysons-legacy-image-bucket"
+modern_bucket = "jaysons-new-image-bucket"
 
-for file in dirs:
-    print (file)
+def remote_ls_legacy(rmls):
+        session = boto3.Session()
+        s3 = session.resource('s3')
+        bucket = s3.Bucket(legacy_bucket)
+
+        for obj in bucket.objects.all():
+            print(obj.key)
+
+def remote_ls_modern(rmls):
+        session = boto3.Session()
+        s3 = session.resource('s3')
+        bucket = s3.Bucket(modern_bucket)
+
+        for obj in bucket.objects.all():
+            print(obj.key)
+
+remote_ls_legacy('rmls')
+remote_ls_modern('rmls')
+
 
