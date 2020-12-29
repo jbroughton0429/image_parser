@@ -1,8 +1,8 @@
 {  
    "variables":{  
       "version":"1.0.0",
-      "aws_access_key":"$AWSACCESSKEY",
-      "aws_secret_key":"$AWSSECRETKEY",
+      "aws_access_key":"",
+      "aws_secret_key":"",
       "region":"us-east-1",
       "vpc_id":"vpc-e31ee385",
       "subnet_id":"subnet-5ba1c812"
@@ -42,7 +42,7 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"Database_1",
+         "ami_name":"Database_2",
          "ami_description":"DB Template",
          "tags":{  
             "NodeType":"DB",

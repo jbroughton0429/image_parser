@@ -45,7 +45,7 @@ resource "aws_security_group" "database" {
 
 resource "aws_instance" "database" {
   key_name      = aws_key_pair.database.key_name
-  ami           = "ami-085490c5f90c38b0d"
+  ami           = "ami-020bd296c3c8558fe"
   instance_type = "t2.micro"
 
   tags = {

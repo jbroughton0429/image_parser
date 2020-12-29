@@ -24,4 +24,4 @@ screen -t 'tunnel' 3 bash #
 
 # Switch to the workspace screen
 select 1
-
+caption always "%m/%d/%y %0c%{=b kg}  %l  %{=r gk}%-w%{=b wb}%50>%n%f* %t%{-}%+Lw%<%{- Wk}"
