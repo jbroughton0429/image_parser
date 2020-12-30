@@ -1,8 +1,7 @@
 {  
    "variables":{  
       "version":"0.1.0",
-      "aws_access_key":"$AWSACCESSKEY",
-      "aws_secret_key":"$AWSECRETKEY",
+      "type": "amazon-ebs",
       "region":"us-east-1",
       "vpc_id":"vpc-e31ee385",
       "subnet_id":"subnet-5ba1c812"
@@ -44,7 +43,7 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"DevOps_3",
+         "ami_name":"DevOps_4",
          "ami_description":"DevOps Template",
          "tags":{  
             "NodeType":"DevOps",
