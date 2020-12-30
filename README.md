@@ -1,32 +1,49 @@
-# image_parser
-1. Execute the /scripts/run_me_first.sh to setup your dev environment - in Ubuntu 20.04
-2. Change the necessary vars in ./packer/
-packer_database-amazon.json  packer_devops-amazon.json
-to match that of your AWS environment (Variables that are required are listed at the top)
-3. Change your MySQL password: '/scripts/reset_mysql_pw.sql'
-4. Build the two packer images
-5. Edit TF Vars files: 
-   - terraform/global/buckets/vars.tf (Add your Bucket information in)
-   - terraform/devops/main.tf 
-      = If you are in Prod Environment, switch Tags here to Prod from Dev
-      = Change the AMI to that of the DevOps Image built from Packer (located in your AWS AMI Console)
-   - terraform/platform/main.tf (ami - Same as devops, however the image for this one is labeled 'database')
-      = If you are in Prod Environment, switch Tags here to Prod from Dev
-      = Change the AMI to that of the DevOps Image built from Packer (located in your AWS AMI Console)
-6. If this is your first time building TF in this environment, uncomment the 'bucket' line in:
-   'deploy.sh'
-7. Execute 'deploy.sh' to build the TF environment
-8. Your 'Dev' Environment is no longer needed, log into 'Console' for all further steps.
+Vars:
+Packer-Files (/packer)
+* In variables area: modify region, vpc_id and subnet_id for your environment
 
-## Console ##
+SQL Code - (/scripts)
+build_db.sql - change rtrenneman's default password (line 3)
+reset_mysql_pw.sql - change root default password
 
-To Log into the console, be sure to copy over your private keys from ./keys directory that was generated during the development phase. 
-You will need this to login to both console and database servers.
+Terraform - (/terraform)
 
-1. The console is setup to make a ssh-key connection to the database server (passwordless). In order for the TDD script to initialize
-correctly, run an SSH connection to validate this: ssh <ip-of-database-server> and accept the fingerprint.  After this you should no longer
-need to accept fingerprint.
+deploy.sh - Uncomment the bucket item if this is the first time building your bucket.
 
-2. Tunnel.py is a reverse tunnel for the database server. Run this with ./tunnel.py -r <hostname-of-database-server> run it in the background to continue the connection. The default port is TCP/3337.
+global/bucket/vars.tf - Change the region, and name of your 3 buckets (tfstate, legacy and production)
 
+///AFTER Packer Built/// devops/main.tf & platform/main.tf respectivly - Change the AMI ID under to reflect that of the
+	created AMI from packer
 
+1. Execute: /scripts/run_me_first.sh 
+2. Run: <aws configure> to setup keys for terraform
+3. Execute: /scripts/keygen.sh ((Time to complete 1-3 - 5min))
+4. cd packer && packer build packer_database-amazon.json - Upon completion, copy the AMI-ID at the end of the script, place it
+   into the terraform: /terraform/platform/main.tf
+5. Do the same for the devops/console machine: packer build packer_devops-amazon.json. Upon completion, copy the AMI-ID to:
+   /terraform/devops/main.tf ((Time to complete 4/5 - 10min))
+6. Run terraform build script:
+	cd /terraform
+	./build.sh
+7. Run the following commands to get Internal IP addresses of your instances (copy both for later):
+	terraform -chdir=devops show | grep public_ip
+	terraform -chdir=platform show | grep private_ip
+	((Time to complete - 1 minute))
+	
+	
+
+**Copy out your keys from <keys> directory - This Console is no longer needed and can be shut down (you can use it to destroy the environment when we are completed)**
+1. SSH to Console/Devops
+2. Run: screen
+3. switch to 'tunnel' and start up the tunnel to the database
+	a. cd tests && ./tunnel.py -r <ipaddr-db-svr>
+	b. An established tunnel will result in TCP:/3337
+4. switch to 'console-svr' 
+5. run: aws configure, to setup AWS in the console environment
+6. Build the Database: (automate this in packer)
+	a. cd scripts/
+	a. mysql -h "127.0.0.1" -P 3337 -u "root" -p "mysql" < "build_db.sql"
+7. Edit: /tests/create-files.py and specify your 'legacy_bucket' and 'modern_bucket' locations.
+8. Run ./create-files.py -l <# of legacy avatar images to create> -m <# of modern avatar images to create>
+	((Total time - 5min))
+9. 
