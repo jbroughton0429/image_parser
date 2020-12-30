@@ -5,6 +5,7 @@ import tempfile
 import logging
 import boto3
 import botocore.exceptions
+import mariadb
 
 from tempfile import mkstemp
 
@@ -14,6 +15,19 @@ legacy_dir = "./legacy-s3"
 modern_dir = "./production-s3"
 legacy_bucket = "jaysons-legacy-image-bucket"
 modern_bucket = "jaysons-new-image-bucket"
+
+try:
+    conn = mariadb.connect(
+        user="rtrenneman",
+        password="haveyouturneditoffandonagain",
+        host="127.0.0.1",
+        port=3337,
+        database="avatar_db"
+
+    )
+except mariadb.Error as e:
+    print(f"Error connecting to MariaDB Platform: {e}")
+    sys.exit(1)
 
 # Arg Parser commands
 parser = argparse.ArgumentParser()
@@ -60,23 +74,37 @@ def upload_legacy_files(path):
     session = boto3.Session()
     s3 = session.resource('s3')
     bucket = s3.Bucket(legacy_bucket)
+    mycursor = conn.cursor()
 
     for subdir, dirs, files in os.walk(path):
         for file in files:
             full_path = os.path.join(subdir, file)
             with open(full_path, 'rb') as data:
                 bucket.put_object (Key=full_path[len(path)+1:], Body=data)
+        for obj in bucket.objects.all():
+            names = [bucket.name,obj.key]
+            sql = "INSERT INTO avatars (bucket, file) VALUES (%s, %s)"
+            mycursor.execute(sql, names)
+    conn.commit()
 
 def upload_modern_files(path):
     session = boto3.Session()
     s3 = session.resource('s3')
     bucket = s3.Bucket(modern_bucket)
+    mycursor = conn.cursor()
 
     for subdir, dirs, files in os.walk(path):
         for file in files:
             full_path = os.path.join(subdir, file)
             with open(full_path, 'rb') as data:
                 bucket.put_object (Key=full_path[len(path)+1:], Body=data)
+        for obj in bucket.objects.all():
+            names = [bucket.name,obj.key]
+            sql = "INSERT INTO avatars (bucket, file) VALUES (%s, %s)"
+            mycursor.execute(sql, names)
+
+    conn.commit()
+
 
 upload_legacy_files(legacy_dir)
 upload_modern_files(modern_dir)
