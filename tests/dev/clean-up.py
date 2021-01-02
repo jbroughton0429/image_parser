@@ -8,16 +8,16 @@ import mariadb
 from tempfile import mkstemp
 
 # Vars for bucket storage and temporary files
-legacy_dir = "../legacy-s3"
-modern_dir = "../production-s3"
+legacy_dir = "../image"
+modern_dir = "../avatar"
 legacy_bucket = "jaysons-legacy-image-bucket"
 modern_bucket = "jaysons-new-image-bucket"
 
 # ArgParser Commanders
 parser = argparse.ArgumentParser()
 
-parser.add_argument('-d', nargs="+", default=["../legacy-s3","../production-s3"],
-        help="Delete Files no longer in use - default: legacy-s3, production-s3")
+parser.add_argument('-d', nargs="+", default=["../image","../avatar"],
+        help="Delete Files no longer in use - default: image, avatar")
 
 ## I need to add this to argparse -
 #parser.add_argument('-m', '--simulate', action='store_true',

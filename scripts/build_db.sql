@@ -8,7 +8,7 @@ USE avatar_db;
 CREATE TABLE avatars (
 	id MEDIUMINT NOT NULL AUTO_INCREMENT,
 	bucket VARCHAR (100) NOT NULL,
-	file CHAR (20) NOT NULL,
+	file CHAR (30) NOT NULL,
 	PRIMARY KEY (id)
 	);
 					

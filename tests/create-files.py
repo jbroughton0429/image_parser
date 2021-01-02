@@ -11,8 +11,8 @@ from tempfile import mkstemp
 
 # Temp directory for temporary file storage
 Working_Dir = "."
-legacy_dir = "./legacy-s3"
-modern_dir = "./production-s3"
+legacy_dir = "image"
+modern_dir = "avatar"
 legacy_bucket = "jaysons-legacy-image-bucket"
 modern_bucket = "jaysons-new-image-bucket"
 
@@ -74,13 +74,14 @@ def upload_legacy_files(path):
     session = boto3.Session()
     s3 = session.resource('s3')
     bucket = s3.Bucket(legacy_bucket)
+    remoteDirectoryName = "image"
     mycursor = conn.cursor()
 
     for subdir, dirs, files in os.walk(path):
         for file in files:
             full_path = os.path.join(subdir, file)
             with open(full_path, 'rb') as data:
-                bucket.put_object (Key=full_path[len(path)+1:], Body=data)
+               bucket.put_object (Key=full_path, Body=data)
         for obj in bucket.objects.all():
             names = [bucket.name,obj.key]
             sql = "INSERT INTO avatars (bucket, file) VALUES (%s, %s)"
@@ -97,7 +98,7 @@ def upload_modern_files(path):
         for file in files:
             full_path = os.path.join(subdir, file)
             with open(full_path, 'rb') as data:
-                bucket.put_object (Key=full_path[len(path)+1:], Body=data)
+                bucket.put_object (Key=full_path, Body=data)
         for obj in bucket.objects.all():
             names = [bucket.name,obj.key]
             sql = "INSERT INTO avatars (bucket, file) VALUES (%s, %s)"
