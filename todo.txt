@@ -3,6 +3,7 @@
 #####
 
 1. Var out TF for AMI's (currently hardcoded)
+	- Source Packer Images as name_date
 
 
 #####

@@ -43,7 +43,7 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"DevOps_5",
+         "ami_name":"DevOps_1",
          "ami_description":"DevOps Template",
          "tags":{  
             "NodeType":"DevOps",

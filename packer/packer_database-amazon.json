@@ -41,11 +41,11 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"Database_4",
+         "ami_name":"Database_1",
          "ami_description":"DB Template",
          "tags":{  
-            "NodeType":"DB",
-            "service":"DB"
+            "service":"DB",
+	    "NodeType":"DB"
          },
          "run_tags":{  
             "NodeType":"DB"

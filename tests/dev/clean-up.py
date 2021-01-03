@@ -55,7 +55,7 @@ def remote_del_legacy(remwhack):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(legacy_bucket)
 
-    for obj in bucket.objects.filter(Prefix='avatar'):
+    for obj in bucket.objects.filter(Prefix='image'):
             s3.Object(bucket.name, obj.key).delete()
 
 def remote_del_modern(remwhack):
