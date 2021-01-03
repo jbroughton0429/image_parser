@@ -4,6 +4,7 @@
 
 1. Var out TF for AMI's (currently hardcoded)
 	- Source Packer Images as name_date
+2. Replace MySQL SP into Python - Less Vars to mess with
 
 
 #####
@@ -15,7 +16,8 @@
 #Script#
 ########
 
-WIP
+1. Validate data after change to SQL - (compare filenames from legacy bucket, with filenames of sql)
+
 
 
 @@@@@@@@@@@@@@@@@@
