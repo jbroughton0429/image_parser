@@ -42,10 +42,24 @@ resource "aws_security_group" "database" {
   }
 }
 
+data "aws_ami" "database" {
+  owners = ["self"]
+  most_recent = true
+
+  filter {
+    name = "state"
+    values = ["available"]
+  }
+  filter {
+    name = "tag:Name"
+    values = ["Database"]
+ }
+}
+
 
 resource "aws_instance" "database" {
   key_name      = aws_key_pair.database.key_name
-  ami           = "ami-07ae0955ff986518b"
+  ami           = data.aws_ami.database.id
   instance_type = "t2.micro"
 
   tags = {

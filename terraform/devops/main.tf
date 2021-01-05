@@ -43,9 +43,23 @@ resource "aws_security_group" "console" {
 }
 
 
+data "aws_ami" "devops" {
+  owners = ["self"]
+  most_recent = true
+
+  filter {
+    name = "state"
+    values = ["available"]
+  }
+  filter {
+    name = "tag:Name"
+    values = ["DevOps"]
+ }
+}
+
 resource "aws_instance" "console" {
   key_name      = aws_key_pair.console.key_name
-  ami           = "ami-0f90935c37857099d"
+  ami           = data.aws_ami.devops.id
   instance_type = "t2.micro"
 
   tags = {

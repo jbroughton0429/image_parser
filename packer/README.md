@@ -58,15 +58,8 @@ The purpose of this image is to control the Database from a 'secure' location. I
     $ packer build packer_devops-amazon.json
     ```
     *Note - You can run these two images simultaneously via GNU Screen*
-4. When the images have completed building, they will output an AMI ID at the end. This ID is referenced in the Core README. However, if you skipped this README and jumped straight to this directory:
+4. When the images have completed building, they will output an AMI ID at the end. This ID is used automagically by Terraform to build your project
 
-5. Edit Terraform Files and input your AMI ID for the specific image
-    ```sh
-    $ vim ../terraform/devops/main.tf
-    # Search 'ami' & replace with the 'Console' that was an output from Packer
-    $ vim ../terraform/platform.main.tf
-    # Search 'ami' and replace with the 'Database' AMI that was an output from Packer
-    ```
    
    
 # Further Information

@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-import os
-import argparse
+
+# Maintenance Script: DELETE
+#
+# This Script will do the following items:
+#
+# * Delete all items in 2 buckets with the following prefix: avatar*
+# * Delete the 2 temp files 'legacy' and 'modern' in the filesystem
+#* Truncate the Avatars table in the avatar_db
+#
+
 import shutil
 import boto3
 import mariadb
-
-from tempfile import mkstemp
 
 s3 = boto3.resource('s3')
 
@@ -14,29 +20,11 @@ bucket = {
         "legacy": "jaysons-legacy-image-bucket",
         "modern": "jaysons-new-image-bucket"
         }
+
 old_bucket = s3.Bucket(bucket["legacy"])
 new_bucket = s3.Bucket(bucket["modern"])
-# filepath doesn't seem to be used - Maybe I was playing with it for arparse?
-filepath = {
-	"legacy": "../image",
-        "modern": "../avatar"
-        }
 
-# ArgParser Commanders
-parser = argparse.ArgumentParser()
-
-parser.add_argument('-d', nargs="+", default=["../image","../avatar"],
-        help="Delete Files no longer in use - default: image, avatar")
-
-## I need to add this to argparse -
-#parser.add_argument('-m', '--simulate', action='store_true',
-#                        help="Wipe Remote MariaDB database")
-
-
-args = parser.parse_args()
-
-avatar_dirs = args.d
-#remote_maria = args.m
+avatar_dirs = ["../image","../avatar"]
 
 # MariaDB Connector
 
@@ -58,7 +46,8 @@ for x in avatar_dirs:
     shutil.rmtree(x, ignore_errors=True)
 
 
-# Whack all Temporary S3 Bucket data 'avatar' after testing
+# Delete all Temporary S3 Bucket data 'avatar' after testing
+
 def remote_del_legacy(remwhack):
     session = boto3.Session()
     bucket = old_bucket
@@ -73,10 +62,8 @@ def remote_del_modern(remwhack):
     for obj in bucket.objects.filter(Prefix='avatar'):
         s3.Object(bucket.name, obj.key).delete()
 
-remote_del_legacy('remwhack')
-remote_del_modern('remwhack')
+# Drop all data in Avatar table
 
-# Whack the database
 def remote_maria(remote_db):
     cursor = conn.cursor()
     cursor.execute('TRUNCATE TABLE avatars;')
@@ -84,4 +71,7 @@ def remote_maria(remote_db):
     cursor.close()
     conn.close()
 
+# Run Everything
+remote_del_legacy('remwhack')
+remote_del_modern('remwhack')
 remote_maria('remote_db')

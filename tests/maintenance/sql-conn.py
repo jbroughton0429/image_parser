@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 
-# Module Imports
+# Maintenance Script: SQL Connector
+#
+# This is a peace of mind test script to validate that the
+# SSH Tunnel is operating properly, the credentials are working,
+# database is in place and I can see the table.
+#
+
 import mariadb
 import sys
 
@@ -18,13 +24,15 @@ except mariadb.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
     sys.exit(1)
 
-mycursor = conn.cursor()
+cursor = conn.cursor()
 
 # Test to see if I can describe the table
-mycursor.execute("DESCRIBE avatars")
+cursor.execute("DESCRIBE avatars")
 
-myresult = mycursor.fetchall()
+myresult = cursor.fetchall()
 
 for x in myresult:
     print(x)
 
+cursor.close()
+conn.close()

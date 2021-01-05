@@ -43,14 +43,11 @@
          "subnet_id":"{{user `subnet_id`}}",
          "associate_public_ip_address": "true",
          "ssh_username":"ubuntu",
-         "ami_name":"DevOps_1",
+         "ami_name":"devops-{{isotime | clean_resource_name}}",
          "ami_description":"DevOps Template",
          "tags":{  
-            "NodeType":"DevOps",
-            "service":"DevOps"
-         },
-         "run_tags":{  
-            "NodeType":"DevOps"
+            "service":"DevOps",
+	    "Name":"DevOps"
          }
       }
    ]
