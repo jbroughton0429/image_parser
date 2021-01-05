@@ -2,7 +2,7 @@
 
 """
 
-Initiate a Tunnel to the MiriaDB server in order to perform maintenance
+Initiate a Tunnel to the MariaDB server in order to perform maintenance
 Replace ssh_address_or_host with the internal address (or hostname)
 of the server/service
 

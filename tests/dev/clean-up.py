@@ -7,11 +7,20 @@ import mariadb
 
 from tempfile import mkstemp
 
+s3 = boto3.resource('s3')
+
 # Vars for bucket storage and temporary files
-legacy_dir = "../image"
-modern_dir = "../avatar"
-legacy_bucket = "jaysons-legacy-image-bucket"
-modern_bucket = "jaysons-new-image-bucket"
+bucket = {
+        "legacy": "jaysons-legacy-image-bucket",
+        "modern": "jaysons-new-image-bucket"
+        }
+old_bucket = s3.Bucket(bucket["legacy"])
+new_bucket = s3.Bucket(bucket["modern"])
+# filepath doesn't seem to be used - Maybe I was playing with it for arparse?
+filepath = {
+	"legacy": "../image",
+        "modern": "../avatar"
+        }
 
 # ArgParser Commanders
 parser = argparse.ArgumentParser()
@@ -52,16 +61,14 @@ for x in avatar_dirs:
 # Whack all Temporary S3 Bucket data 'avatar' after testing
 def remote_del_legacy(remwhack):
     session = boto3.Session()
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket(legacy_bucket)
+    bucket = old_bucket
 
     for obj in bucket.objects.filter(Prefix='image'):
-            s3.Object(bucket.name, obj.key).delete()
+        s3.Object(bucket.name, obj.key).delete()
 
 def remote_del_modern(remwhack):
     session = boto3.Session()
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket(modern_bucket)
+    bucket = new_bucket
 
     for obj in bucket.objects.filter(Prefix='avatar'):
         s3.Object(bucket.name, obj.key).delete()
@@ -71,7 +78,10 @@ remote_del_modern('remwhack')
 
 # Whack the database
 def remote_maria(remote_db):
-	mycursor = conn.cursor()
-	mycursor.execute('TRUNCATE TABLE avatars;')
-	conn.commit()
+    cursor = conn.cursor()
+    cursor.execute('TRUNCATE TABLE avatars;')
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 remote_maria('remote_db')

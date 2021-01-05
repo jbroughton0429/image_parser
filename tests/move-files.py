@@ -1,25 +1,54 @@
 #!/usr/bin/env python3
 
-# Shamelessly plucked from:
+# Shamelessly plucked the bucket-to-bucket migration from:
 # https://stackoverflow.com/questions/43458001/can-we-copy-the-files-and-folders-recursively-between-aws-s3-buckets-using-boto3
 
-
-## Jayson Note - move my MySQL SP into this python, less vars in less files to handle on setup.
-
 import boto3
+import mariadb
 
-old_bucket_name = 'jaysons-legacy-image-bucket'
-old_prefix = 'image'
-new_bucket_name = 'jaysons-new-image-bucket'
-new_prefix = 'avatar'
 s3 = boto3.resource('s3')
-old_bucket = s3.Bucket(old_bucket_name)
-new_bucket = s3.Bucket(new_bucket_name)
 
-for obj in old_bucket.objects.filter(Prefix=old_prefix):
-    old_source = { 'Bucket': old_bucket_name,
-                   'Key': obj.key}
-    new_key = obj.key.replace(old_prefix, new_prefix, 1)
-    new_obj = new_bucket.Object(new_key)
-    new_obj.copy(old_source)
+bucket = {
+        "legacy": "jaysons-legacy-image-bucket", 
+        "modern": "jaysons-new-image-bucket"
+        }
+prefix = {
+        "old": 'image',
+        "modern": 'avatar'
+        }
+old_bucket = s3.Bucket(bucket["legacy"])
+new_bucket = s3.Bucket(bucket["modern"])
 
+
+try: conn = mariadb.connect(
+		user="rtrenneman",
+		password="haveyouturneditoffandonagain",
+		host="127.0.0.1",
+		port=3337,
+		database="avatar_db"
+	)
+except mariadb.Error as e:
+    print(f"Error connecting to MariaDB Platform: {e}")
+    sys.exit(1)
+	
+def myfunction():
+    
+    cursor = conn.cursor()
+
+    for obj in old_bucket.objects.filter(Prefix=prefix["old"]):
+        old_source = { 'Bucket': bucket["legacy"],
+                    'Key': obj.key}
+        new_key = obj.key.replace(prefix["old"], prefix["modern"], 1)
+        new_obj = new_bucket.Object(new_key)
+        new_obj.copy(old_source)
+
+    try: 
+        cursor.execute("UPDATE avatars SET bucket = replace(bucket,%s,%s)",(bucket["legacy"],bucket["modern"]))
+        cursor.execute('''UPDATE avatars SET file = CONCAT("avatar/",SUBSTRING_INDEX(file,"/",-1))''')
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        conn.rollback()
+
+myfunction()
