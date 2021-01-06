@@ -78,6 +78,8 @@ The TF-State is stored in the bucket. This means that from this Console machine,
 
 | Software | Website |
 | ------ | ------ |
-| Terraform | [https://www.terraform.io/][PlGh] |
+| Terraform | [https://www.terraform.io/][PlTe] |
+
+[PlTe]: <https://www.terraform.io>
 
 

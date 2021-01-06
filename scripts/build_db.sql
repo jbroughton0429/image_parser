@@ -1,3 +1,9 @@
+/* Create avatar_db, tables and create
+   a user with specific privledges to the
+   avatar_db
+ */
+
+-- You should...probably replace the password
 
 CREATE DATABASE avatar_db;
 CREATE USER rtrenneman IDENTIFIED BY 'haveyouturneditoffandonagain';

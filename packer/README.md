@@ -66,7 +66,10 @@ The purpose of this image is to control the Database from a 'secure' location. I
 
 | Software | Website |
 | ------ | ------ |
-| Packer | [https://www.packer.io/][PlDb] |
-| Terraform | [https://www.terraform.io/][PlGh] |
-| MariaDB | [https://mariadb.org/][PlGd] |
+| Packer | [https://www.packer.io/][PlPa] |
+| Terraform | [https://www.terraform.io/][PlTe] |
+| MariaDB | [https://mariadb.org/][PlMd] |
 
+[PlPa]: <https//www.packer.io/>
+[PlTe]: <https://www.terraform.io/>
+[PlMd]: <https://mariadb.org/>
