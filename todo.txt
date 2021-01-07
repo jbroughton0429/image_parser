@@ -2,10 +2,7 @@
 #Env#
 #####
 
-1. Var out TF for AMI's (currently hardcoded)
-	- Source Packer Images as name_date
-2. Replace MySQL SP into Python - Less Vars to mess with
-
+1. Var out TF
 
 #####
 #TDD#
@@ -17,12 +14,10 @@
 ########
 
 1. Validate data after change to SQL - (compare filenames from legacy bucket, with filenames of sql)
+2. put more Error handling in the move script
 
 
 
 @@@@@@@@@@@@@@@@@@
 @@ Nice to have @@
 @@@@@@@@@@@@@@@@@@
-* Wrap packer ami output into variable for TF AMI
-* Script to output IP Addresses up completion of TF - used to connect and make changes to proxy	(Instead of relying on AWS Console
-	* terraform show - json -> send to python and output: name, region, key name, private ip address
