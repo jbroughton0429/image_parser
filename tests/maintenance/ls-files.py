@@ -9,31 +9,46 @@
 
 import boto3
 
+##@ bump buckets to dict, use in combined function @##
+
 # Vars for S3 Buckets
 legacy_bucket = "jaysons-legacy-image-bucket"
 modern_bucket = "jaysons-new-image-bucket"
 
-# Connect to legacy bucket print results
-def remote_ls_legacy(rmls):
-        session = boto3.Session()
-        s3 = session.resource('s3')
-        bucket = s3.Bucket(legacy_bucket)
+def remote_ls_legacy():
+    '''
+    Connect to the legacy bucket & print results
 
-        for obj in bucket.objects.all():
-            names = [bucket.name,obj.key]
-            print(names)
+    TODO - Merge this and the modern function, as a single function
+
+    TODO - Add error handling
+    '''
+    session = boto3.Session()
+    s3 = session.resource('s3')
+    bucket = s3.Bucket(legacy_bucket)
+
+    for obj in bucket.objects.all():
+        names = [bucket.name,obj.key]
+        print(names)
 
 # Connect to modern bucket and print results
-def remote_ls_modern(rmls):
-        session = boto3.Session()
-        s3 = session.resource('s3')
-        bucket = s3.Bucket(modern_bucket)
+def remote_ls_modern():
+    '''
+    Connect to the modern bucket & print resoults
 
-        for obj in bucket.objects.all():
-            names = [bucket.name,obj.key] 
-            print(names)
+    TODO - Merge this and the legacy function, as a single function
 
-remote_ls_legacy('rmls')
-remote_ls_modern('rmls')
+    TODO - Add error handling
+    '''
+    session = boto3.Session()
+    s3 = session.resource('s3')
+    bucket = s3.Bucket(modern_bucket)
+
+    for obj in bucket.objects.all():
+        names = [bucket.name,obj.key] 
+        print(names)
+
+remote_ls_legacy()
+remote_ls_modern()
 
 

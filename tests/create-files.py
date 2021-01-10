@@ -73,10 +73,11 @@ if not os.path.exists(directory["legacy"]):
 if not os.path.exists(directory["modern"]):
         os.mkdir(directory["modern"]);
 
-# Creates Temp files on this FS
 
-def temp_files(tempfile):
-
+def temp_files():
+    '''
+    Creates Temporary files on this Filesystem
+    '''
     for i in range(legacynum):
         fd, path = mkstemp(prefix='avatar-', suffix='.png', dir=directory["legacy"])
         with os.fdopen(fd, 'w') as fp:
@@ -88,10 +89,13 @@ def temp_files(tempfile):
         with os.fdopen(fd, 'w') as fp:
             fp.write('Modern Files\n')
 
-# Upload Legacy and Modern Data from Temp FS to the respective Buckets;
-# Push this data into the Database
-# TODO - Error Handling
 def upload_legacy_files(path):
+    '''
+    Upload Legacy files from TempFS to the respective buckets;
+    Push this into the Database
+    TODO - Merge this with upload_modern_Files function, into a single function
+    TODO - Error Handling
+    '''
     bucket = old_bucket
     cursor = conn.cursor()
 
@@ -108,6 +112,12 @@ def upload_legacy_files(path):
     cursor.close()
 
 def upload_modern_files(path):
+    '''
+    Upload Modern Data from Temp FS to the respective buckets;
+    Push this into the Database
+    TODO - Merge this with upload_data_files function, into single function
+    TODO - Error Handling
+    '''
     bucket = new_bucket
     cursor = conn.cursor()
 
@@ -123,7 +133,7 @@ def upload_modern_files(path):
     conn.commit()
     cursor.close()
 
-temp_files('tempfile')
+temp_files()
 upload_legacy_files(directory["legacy"])
 upload_modern_files(directory["modern"])
 

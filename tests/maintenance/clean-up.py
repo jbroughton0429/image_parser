@@ -46,25 +46,35 @@ for x in avatar_dirs:
     shutil.rmtree(x, ignore_errors=True)
 
 
-# Delete all Temporary S3 Bucket data 'avatar' after testing
+def remote_del_legacy():
+    '''
+    Delete all Tempotary S3 Bucket data 'image' after testing
 
-def remote_del_legacy(remwhack):
+    TODO (Maybe) Roll old/new buckets and prefix var's into a tuple. Then merge remote_del_legacy and remote_del_modern as single function
+
+    TODO - Error handling in Delete is missing
+    '''
     session = boto3.Session()
     bucket = old_bucket
 
     for obj in bucket.objects.filter(Prefix='image'):
         s3.Object(bucket.name, obj.key).delete()
 
-def remote_del_modern(remwhack):
+def remote_del_modern():
+    '''
+    Delete all Temporary S3 Bucket data 'avatar' after testing
+    '''
     session = boto3.Session()
     bucket = new_bucket
 
     for obj in bucket.objects.filter(Prefix='avatar'):
         s3.Object(bucket.name, obj.key).delete()
 
-# Drop all data in Avatar table
 
-def remote_maria(remote_db):
+def remote_maria():
+    '''
+    Drop all data in avatar table
+    '''
     cursor = conn.cursor()
     cursor.execute('TRUNCATE TABLE avatars;')
     conn.commit()
@@ -72,6 +82,6 @@ def remote_maria(remote_db):
     conn.close()
 
 # Run Everything
-remote_del_legacy('remwhack')
-remote_del_modern('remwhack')
-remote_maria('remote_db')
+remote_del_legacy()
+remote_del_modern()
+remote_maria()

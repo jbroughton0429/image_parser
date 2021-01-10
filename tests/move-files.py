@@ -46,10 +46,11 @@ except mariadb.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
     sys.exit(1)
 
-# Twofer - Migrate data from Legacy bucket to the new bucket, then update the 
-# Database with changes to the bucket path, and folder path
-
-def migratedata():
+def migrate_data():
+    '''
+    Twofer - Migrate data from LEgacy bucket to the new bucket.
+    Then Step 2 - Update the database with changes to the bucket path, and folder path
+    '''
     
     cursor = conn.cursor()
 
@@ -68,14 +69,15 @@ def migratedata():
     except Exception as e:
         conn.rollback()
 
-# As there appears to be no way with boto3 to run sync, run subprocess to 'dryrun' sun
-# and check that the files were indeed copied over from 1 bucket to the other.
-# If there is an error, it will fail, printing the results of files that will
-# need to be copied over, and 'migration failed' 3x
+def check_data(): 
+    '''
+    As there appears to be no way with boto3 to run sync, run subprocess to 'dryrun' sync.
+    and check that the files were indeed copied over from one bucket to the other.
+    If there is in an error, it will fail, printing the results of the files that will
+    need to be copied over, and 'migration failed' x3
 
-# TODO: Do the same against the DB (run a select against the old data and report if there is old data
-
-def checkdata(): 
+    TODO: Do the same against the DB (run select against old data and report of change failed)
+    '''
     proc = subprocess.run(['aws', 's3', 'sync', '--dryrun', 's3://jaysons-legacy-image-bucket/image', 's3://jaysons-new-image-bucket/avatar'], encoding='utf-8', stdout=subprocess.PIPE)
 
     if 'dryrun' in proc.stdout:
@@ -87,8 +89,8 @@ def checkdata():
         print ("Migration Successful!")
 
 
-migratedata()
-checkdata()
+migrate_data()
+check_data()
 
 # Close the Database
 conn.close()

@@ -37,24 +37,24 @@ resource "aws_security_group" "console" {
 
   tags = {
     Name = "console"
-    Env = "Dev"
-    Sol = "terraform"
+    Env  = "Dev"
+    Sol  = "terraform"
   }
 }
 
 
 data "aws_ami" "devops" {
-  owners = ["self"]
+  owners      = ["self"]
   most_recent = true
 
   filter {
-    name = "state"
+    name   = "state"
     values = ["available"]
   }
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["DevOps"]
- }
+  }
 }
 
 resource "aws_instance" "console" {
@@ -64,8 +64,8 @@ resource "aws_instance" "console" {
 
   tags = {
     Name = "console"
-    Env = "Dev"
-    Sol = "terraform"
+    Env  = "Dev"
+    Sol  = "terraform"
   }
 
   vpc_security_group_ids = [
